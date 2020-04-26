@@ -10,16 +10,11 @@ def main(args):
     kd = KeypointDetector(block_size=args.harris_neighbourhood_size)
     kd.set_image(first_image)
     kd.get_keypoints()
+    desc = kd.get_descriptors()
 
-
-    pixel_locs = np.argwhere(kd.keypoints>0.01*kd.keypoints.max())
-
-    for pixel in pixel_locs:
-        cv2.imshow('corner_neigbourhood', first_image[pixel[0]-5: pixel[0]+5, pixel[1] - 5: pixel[1]+5])
-        cv2.waitKey(0)
-    print(pixel_locs)
-    cv2.imshow('keypoints', first_image)
-    cv2.waitKey(0)
+    print(desc.shape)
+    # cv2.imshow('keypoints', first_image)
+    # cv2.waitKey(0)
     
 
 
