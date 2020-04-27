@@ -4,10 +4,6 @@ import numpy as np
 from utils import array2opencvkp
 
 
-
-
-
-
 class KeypointDetector:
     def __init__(self, block_size=2, keypoint_threshold=0.01, descriptor_method='pixel_neighbourhood', patch_size=5):
         self.block_size = block_size
@@ -20,6 +16,7 @@ class KeypointDetector:
         self.grayscale = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
         self.get_keypoints()
         self.get_descriptors()
+        self.keypoints = array2opencvkp(self.keypoints)
         return self.keypoints, self.descriptors
 
     def get_keypoints(self):
@@ -39,6 +36,9 @@ class KeypointDetector:
         self.descriptors = np.delete(self.descriptors, empty_descriptors, axis=0)
         self.keypoints = np.delete(self.keypoints, empty_descriptors, axis=0)
 
+        # Normalize Descriptors
+        self.descriptors = (self.descriptors - self.descriptors.min())/ (self.descriptors.max() - self.descriptors.min())
+
 
         return self.descriptors
 
@@ -53,8 +53,6 @@ class KeypointDetector:
             if neighbourhood_patch.size == np.square(2*int(np.round(self.patch_size/2)))* 3:
                 neighbourhood_vectors[idx] = neighbourhood_patch.flatten()
 
-   
-        neighbourhood_vectors = (neighbourhood_vectors - neighbourhood_vectors.min())/ (neighbourhood_vectors.max() - neighbourhood_vectors.min())
         return neighbourhood_vectors
 
 
