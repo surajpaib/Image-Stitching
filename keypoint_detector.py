@@ -1,19 +1,11 @@
 import cv2
 import numpy as np
 
-
-def pixel_neighbourhood(image, keypoints, patch_size):
-    neighbourhood_vectors = np.zeros((len(keypoints), np.square(2*int(np.round(patch_size/2)))*3))
-    print(neighbourhood_vectors.shape)
-    for idx, keypoint in enumerate(keypoints):
-        neighbourhood_patch = image[keypoint[0] - int(np.round(patch_size/2)):keypoint[0] + int(np.round(patch_size/2)), \
-            keypoint[1] - int(np.round(patch_size/2)):keypoint[1] + int(np.round(patch_size/2))]
-
-        neighbourhood_vectors[idx] = neighbourhood_patch.flatten()
-        print(neighbourhood_patch.flatten().shape)
+from utils import array2opencvkp
 
 
-    return neighbourhood_vectors
+
+
 
 
 class KeypointDetector:
@@ -23,18 +15,53 @@ class KeypointDetector:
         self.descriptor_method = descriptor_method
         self.patch_size = patch_size
 
-    def set_image(self, image):
+    def detectAndCompute(self, image):
         self.image = image
-        self.grayscale = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        self.grayscale = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        self.get_keypoints()
+        self.get_descriptors()
+        return self.keypoints, self.descriptors
 
     def get_keypoints(self):
-        keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.004)
-        self.keypoints = np.argwhere(keypoints>self.keypoint_threshold*keypoints.max())
+        self.harris_keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.004)
+        self.keypoints = np.argwhere(self.harris_keypoints>self.keypoint_threshold*self.harris_keypoints.max())
         return self.keypoints
 
     def get_descriptors(self):
-        # func_name = eval()
-        return pixel_neighbourhood(self.image, self.keypoints, self.patch_size)
+
+        # Get descriptor function based on argument
+        desc_func = eval('self.{}'.format(self.descriptor_method))
+        self.descriptors = desc_func()
+
+        # Delete descriptors that do not have the patch size pixels in their neighbourhood (corner of image pixels)    
+        empty_descriptors = np.where(~self.descriptors.any(axis=1))[0]
+        
+        self.descriptors = np.delete(self.descriptors, empty_descriptors, axis=0)
+        self.keypoints = np.delete(self.keypoints, empty_descriptors, axis=0)
 
 
+        return self.descriptors
 
+    def pixel_neighbourhood(self):
+        neighbourhood_vectors = np.zeros((len(self.keypoints), np.square(2*int(np.round(self.patch_size/2)))* 3))
+
+        # For each keypoint, collect neighbour pixels and flatten.
+        for idx, keypoint in enumerate(self.keypoints):
+            neighbourhood_patch = self.image[keypoint[0] - int(np.round(self.patch_size/2)):keypoint[0] + int(np.round(self.patch_size/2)), \
+                keypoint[1] - int(np.round(self.patch_size/2)):keypoint[1] + int(np.round(self.patch_size/2))]
+
+            if neighbourhood_patch.size == np.square(2*int(np.round(self.patch_size/2)))* 3:
+                neighbourhood_vectors[idx] = neighbourhood_patch.flatten()
+
+   
+        neighbourhood_vectors = (neighbourhood_vectors - neighbourhood_vectors.min())/ (neighbourhood_vectors.max() - neighbourhood_vectors.min())
+        return neighbourhood_vectors
+
+
+    def sift(self):
+        sift = cv2.xfeatures2d.SIFT_create()
+
+        kp = array2opencvkp(self.keypoints)
+        _, self.descriptors = sift.compute(self.grayscale, kp)
+
+        return self.descriptors

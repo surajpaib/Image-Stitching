@@ -7,12 +7,11 @@ def main(args):
     first_image = cv2.imread(args.first_image_path)
     second_image = cv2.imread(args.second_image_path)
 
-    kd = KeypointDetector(block_size=args.harris_neighbourhood_size)
-    kd.set_image(first_image)
-    kd.get_keypoints()
-    desc = kd.get_descriptors()
+    harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method='sift')
+    kp1, desc1 = harris_kd.detectAndCompute(first_image)
 
-    print(desc.shape)
+    print(desc1.shape)
+    print(desc1)
     # cv2.imshow('keypoints', first_image)
     # cv2.waitKey(0)
     
