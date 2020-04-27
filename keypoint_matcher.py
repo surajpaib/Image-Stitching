@@ -2,14 +2,18 @@ import numpy as np
 import cv2
 
 def normalize(vector):
-    return (vector - vector.min())/(vector.max() - vector.min())
+    return vector/255.
 
 
 def euclidean(query_desc, train_desc):
+    query_desc = normalize(query_desc)
+    train_desc = normalize(train_desc)
     distance = np.linalg.norm(query_desc - train_desc)
     return distance
 
 def correlation(query_desc, train_desc):
+    query_desc = normalize(query_desc)
+    train_desc = normalize(train_desc)    
     distance = np.correlate(query_desc, train_desc)
     return np.abs(distance)
 
@@ -28,11 +32,10 @@ class Matcher:
         self.distance_func = eval(self.matching_method)
 
         self.matches = self.query_image_matching()
-
+ 
         return self.matches
 
     def query_image_matching(self):
-
 
         matches = []
         for query_idx, query_desc in enumerate(self.desc2):

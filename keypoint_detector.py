@@ -20,7 +20,7 @@ class KeypointDetector:
         return self.keypoints, self.descriptors
 
     def get_keypoints(self):
-        self.harris_keypoints = cv2.cornerHarris(self.grayscale.astype(np.float32), self.block_size, 3, 0.004)
+        self.harris_keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.004)
         self.keypoints = np.argwhere(self.harris_keypoints>self.keypoint_threshold*self.harris_keypoints.max())
         return self.keypoints
 
