@@ -5,7 +5,7 @@ from utils import array2opencvkp
 
 
 class KeypointDetector:
-    def __init__(self, block_size=2, keypoint_threshold=0.01, descriptor_method='pixel_neighbourhood', patch_size=5):
+    def __init__(self, block_size=2, keypoint_threshold=0.01, descriptor_method='pixel_neighbourhood', patch_size=5, max_keypoints=500):
         self.block_size = block_size
         self.keypoint_threshold = keypoint_threshold
         self.descriptor_method = descriptor_method
@@ -20,7 +20,7 @@ class KeypointDetector:
         return self.keypoints, self.descriptors
 
     def get_keypoints(self):
-        self.harris_keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.004)
+        self.harris_keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.04)
         self.keypoints = np.argwhere(self.harris_keypoints>self.keypoint_threshold*self.harris_keypoints.max())
         return self.keypoints
 
@@ -49,7 +49,7 @@ class KeypointDetector:
             if neighbourhood_patch.size == np.square(2*int(np.round(self.patch_size/2)))* 3:
                 neighbourhood_vectors[idx] = neighbourhood_patch.flatten()
 
-        return neighbourhood_vectors
+        return neighbourhood_vectors.astype(np.float32)
 
 
     def sift(self):
