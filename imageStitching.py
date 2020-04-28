@@ -14,7 +14,7 @@ def main(args):
     right_image = cv2.imread(args.right_image_path)
 
 
-    harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method='sift', keypoint_threshold=0.1, max_keypoints=500)
+    harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method='pixel_neighbourhood', keypoint_threshold=0.05, max_keypoints=500)
     kp1, desc1 = harris_kd.detectAndCompute(left_image)
     drawImage = cv2.drawKeypoints(left_image, kp1, None)
     cv2.imshow('Image', drawImage)
@@ -43,7 +43,6 @@ def main(args):
     for i, match in enumerate(matches):
         points1[i, :] = kp1[match.queryIdx].pt
         points2[i, :] = kp2[match.trainIdx].pt
-        print(match.distance)
         accuracy_score += match.distance
 
     logging.info("Accuracy Score: {}".format(accuracy_score/len(matches)))
