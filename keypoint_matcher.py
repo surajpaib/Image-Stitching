@@ -20,7 +20,7 @@ class Matcher:
         self.n_matches = n_matches
         self.match_threshold = match_threshold
 
-    def match(self, descriptor1, descriptor2):
+    def match_descriptors(self, descriptor1, descriptor2):
         self.desc1 = descriptor1
         self.desc2 = descriptor2
 

@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import logging
 
+from homography import RANSAC
 from keypoint_detector import KeypointDetector
 from keypoint_matcher import Matcher
 
@@ -15,48 +16,55 @@ def main(args):
 
 
     harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method='pixel_neighbourhood', keypoint_threshold=0.05, max_keypoints=500)
-    kp1, desc1 = harris_kd.detectAndCompute(left_image)
-    drawImage = cv2.drawKeypoints(left_image, kp1, None)
-    cv2.imshow('Image', drawImage)
-    cv2.waitKey(0)
-
-    kp2, desc2 = harris_kd.detectAndCompute(right_image)
     
-    drawImage = cv2.drawKeypoints(right_image, kp2, None)
-    cv2.imshow('Image', drawImage)
-    cv2.waitKey(0)
+    keypoint1, descriptor1 = harris_kd.detect_compute_descriptor(left_image)
+    
+    drawImage = cv2.drawKeypoints(left_image, keypoint1, None)
+    # cv2.imshow('Image', drawImage)
+    # cv2.waitKey(0)
 
-    logging.info("Descriptor shape for image1: {} \n Descriptor shape for image2: {}".format(desc1.shape, desc2.shape))
-    matcher = Matcher()
-    matches = matcher.match(desc1, desc2)
+    keypoint2, descriptor2 = harris_kd.detect_compute_descriptor(right_image)
+    
+    drawImage = cv2.drawKeypoints(right_image, keypoint2, None)
+    # cv2.imshow('Image', drawImage)
+    # cv2.waitKey(0)
+
+    logging.info("Descriptor shape for image1: {} \n Descriptor shape for image2: {}".format(descriptor1.shape, descriptor2.shape))
+    matcher = cv2.BFMatcher()
+    matches = matcher.match(descriptor1, descriptor2)
 
     matches = sorted(matches, key = lambda x:x.distance)
     matches = matches[:args.n_matches]
 
-    matched_image = cv2.drawMatches(left_image, kp1, right_image, kp2, matches, None, flags=2)
-
-    points1 = np.zeros((len(matches), 2), dtype=np.float32)
-    points2 = np.zeros((len(matches), 2), dtype=np.float32)
 
 
-    accuracy_score = 0
+
+    matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, matches, None, flags=2)
+    # cv2.imshow('Image', matched_image)
+    # cv2.waitKey(0)
+
+    
+    set1 = np.zeros((len(matches), 2), dtype=np.float32)
+    set2 = np.zeros((len(matches), 2), dtype=np.float32)
+
     for i, match in enumerate(matches):
-        points1[i, :] = kp1[match.queryIdx].pt
-        points2[i, :] = kp2[match.trainIdx].pt
-        accuracy_score += match.distance
+        set1[i, :] = keypoint1[match.queryIdx].pt
+        set2[i, :] = keypoint2[match.trainIdx].pt
 
-    logging.info("Accuracy Score: {}".format(accuracy_score/len(matches)))
+    H = RANSAC(set1, set2)
 
-    # Find homography
-    h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
 
-    # Use homography
-    stitchedImage = cv2.warpPerspective(right_image, h, (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
-    stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
+
+    # # Find homography
+    # h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
+
+    # # Use homography
+    # stitchedImage = cv2.warpPerspective(right_image, h, (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
+    # stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
   
 
-    cv2.imshow('Image', stitchedImage)
-    cv2.waitKey(0)
+    # cv2.imshow('Image', stitchedImage)
+    # cv2.waitKey(0)
     
 
 

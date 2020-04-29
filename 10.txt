@@ -1,0 +1,6 @@
+# What to do for a bonus point:
+1. Well documented code
+2. Well organized code
+3. Easy to run
+4. Nice report
+5. All the points being met.

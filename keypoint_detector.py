@@ -11,7 +11,7 @@ class KeypointDetector:
         self.descriptor_method = descriptor_method
         self.patch_size = patch_size
 
-    def detectAndCompute(self, image):
+    def detect_compute_descriptor(self, image):
         self.image = image
         self.grayscale = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
         self.get_keypoints()
