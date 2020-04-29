@@ -20,6 +20,7 @@ def RANSAC(set1, set2, N=100, init_points=5, inlier_threshold=20):
         ls_affinetransform = fit_model(set1_points, set2_points)
         
         n_inliers = 0
+        inlier_indices = []
         for idx, (pt1, pt2) in enumerate((zip(set1, set2))):
             if idx in init_indices:
                 continue
@@ -31,10 +32,11 @@ def RANSAC(set1, set2, N=100, init_points=5, inlier_threshold=20):
             distance = np.sqrt(np.square(difference[0]) + np.square(difference[1]))
             if distance <= inlier_threshold:
                 n_inliers += 1
+                inlier_indices.append(idx)
 
         ransac_iteration["H"] = ls_affinetransform
         ransac_iteration["n_inliers"] = n_inliers
-
+        ransac_iteration["inlier_indices"] = inlier_indices
         ransac_runs.append(ransac_iteration)
 
     print(ransac_runs)
