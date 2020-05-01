@@ -8,7 +8,7 @@ def fit_model(p1, p2):
     return model_params
 
 
-def RANSAC(set1, set2, N=100, init_points=5, inlier_threshold=20):
+def RANSAC(set1, set2, N=1000, init_points=3, inlier_threshold=20):
     # Score between inlier keypoints in image1 and transformed inlier keypoints in image 2.
     ransac_runs = []
 
@@ -36,8 +36,14 @@ def RANSAC(set1, set2, N=100, init_points=5, inlier_threshold=20):
 
         ransac_iteration["H"] = ls_affinetransform
         ransac_iteration["n_inliers"] = n_inliers
+        ransac_iteration["n_outliers"] = len(set1) - (n_inliers + init_points)
+
         ransac_iteration["inlier_indices"] = inlier_indices
+
+
         ransac_runs.append(ransac_iteration)
 
-    print(ransac_runs)
+
+    ransac_runs.sort(key=lambda x: x["n_inliers"])
+    return ransac_runs
 

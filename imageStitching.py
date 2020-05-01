@@ -51,20 +51,22 @@ def main(args):
         set1[i, :] = keypoint1[match.queryIdx].pt
         set2[i, :] = keypoint2[match.trainIdx].pt
 
-    H = RANSAC(set1, set2)
+    best_candidate = RANSAC(set1, set2)[0]
 
+    H = best_candidate["H"]
 
+    print(H)
 
     # # Find homography
     # h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
 
     # # Use homography
-    # stitchedImage = cv2.warpPerspective(right_image, h, (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
-    # stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
+    stitchedImage = cv2.warpPerspective(right_image, H, (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
+    stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
   
 
-    # cv2.imshow('Image', stitchedImage)
-    # cv2.waitKey(0)
+    cv2.imshow('Image', stitchedImage)
+    cv2.waitKey(0)
     
 
 
