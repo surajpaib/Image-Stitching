@@ -15,7 +15,7 @@ def main(args):
     right_image = cv2.imread(args.right_image_path)
 
 
-    harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method='pixel_neighbourhood', keypoint_threshold=0.05, max_keypoints=500)
+    harris_kd = KeypointDetector(block_size=args.harris_neighbourhood_size, descriptor_method=args.descriptor, keypoint_threshold=args.harris_keypoint_threshold)
     
     keypoint1, descriptor1 = harris_kd.detect_compute_descriptor(left_image)
     
@@ -35,14 +35,6 @@ def main(args):
 
     matches = sorted(matches, key = lambda x:x.distance)
     matches = matches[:args.n_matches]
-
-
-
-
-    matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, matches, None, flags=2)
-    # cv2.imshow('Image', matched_image)
-    # cv2.waitKey(0)
-
     
     set1 = np.zeros((len(matches), 2), dtype=np.float32)
     set2 = np.zeros((len(matches), 2), dtype=np.float32)
@@ -51,17 +43,16 @@ def main(args):
         set1[i, :] = keypoint1[match.queryIdx].pt
         set2[i, :] = keypoint2[match.trainIdx].pt
 
-    best_candidate = RANSAC(set1, set2)[0]
+    best_model = RANSAC(set1, set2, init_points=args.RANSAC_init_points, N=args.RANSAC_iterations, inlier_threshold=args.RANSAC_inlier_threshold)
 
-    H = best_candidate["H"]
+    # Draw inlier matches!
+    inlier_matches = [match for idx, match in enumerate(matches) if idx in best_model["inlier_indices"]]
+    matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, inlier_matches, None, flags=2)
+    cv2.imshow('Image', matched_image)
+    cv2.waitKey(0)
 
-    print(H)
-
-    # # Find homography
-    # h, mask = cv2.findHomography(points2, points1, cv2.RANSAC)
-
-    # # Use homography
-    stitchedImage = cv2.warpPerspective(right_image, H, (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
+    # Perspective warp to create the panorama
+    stitchedImage = cv2.warpPerspective(right_image, best_model["H"], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
     stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
   
 
@@ -76,8 +67,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("left_image_path", help="Path to first image in the pair")
     parser.add_argument("right_image_path", help="Path to second image in the pair")
+
+    # Keypoint parameters!
     parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=2)
-    parser.add_argument("--max_keypoints", help="Number of pixels in the harris neighbourhood", type=int, default=500)
-    parser.add_argument("--n_matches", help="Number of pixels in the harris neighbourhood", type=int, default=500)
+    parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.05)
+    parser.add_argument("--descriptor", help="Type of descriptor to choose", type=str, default='sift')
+    parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
+
+    # Matcher parameters!
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
+
+    # RANSAC Parameters
+    parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=1000)
+    parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=3)
+    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=50)
+    
     args = parser.parse_args()
     main(args)

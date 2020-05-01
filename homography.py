@@ -4,11 +4,11 @@ import random
 def fit_model(p1, p2):
     p1 = np.concatenate((p1, np.ones((p1.shape[0], 1))), axis=1)
     p2 = np.concatenate((p2, np.ones((p2.shape[0], 1))), axis=1)
-    model_params = np.linalg.lstsq(p1, p2)[0].T
+    model_params = np.linalg.lstsq(p2, p1)[0].T
     return model_params
 
 
-def RANSAC(set1, set2, N=1000, init_points=3, inlier_threshold=20):
+def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     # Score between inlier keypoints in image1 and transformed inlier keypoints in image 2.
     ransac_runs = []
 
@@ -18,7 +18,6 @@ def RANSAC(set1, set2, N=1000, init_points=3, inlier_threshold=20):
         set1_points, set2_points = set1[init_indices], set2[init_indices]
 
         ls_affinetransform = fit_model(set1_points, set2_points)
-        
         n_inliers = 0
         inlier_indices = []
         for idx, (pt1, pt2) in enumerate((zip(set1, set2))):
@@ -28,7 +27,7 @@ def RANSAC(set1, set2, N=1000, init_points=3, inlier_threshold=20):
             pt1 = np.concatenate((pt1, [1]))
             pt2 = np.concatenate((pt2, [1]))
 
-            difference = pt2 - np.dot(ls_affinetransform, pt1)
+            difference = pt1 - np.dot(ls_affinetransform, pt2)
             distance = np.sqrt(np.square(difference[0]) + np.square(difference[1]))
             if distance <= inlier_threshold:
                 n_inliers += 1
@@ -45,5 +44,12 @@ def RANSAC(set1, set2, N=1000, init_points=3, inlier_threshold=20):
 
 
     ransac_runs.sort(key=lambda x: x["n_inliers"])
-    return ransac_runs
+    best_run = ransac_runs[-1]
+
+    best_points = set1[best_run["inlier_indices"]], set2[best_run["inlier_indices"]]
+    best_model = fit_model(*best_points)
+
+    best_run["H"] = best_model
+
+    return best_run
 
