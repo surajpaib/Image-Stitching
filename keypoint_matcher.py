@@ -54,7 +54,7 @@ class Matcher:
 
         matches = []
         for query_idx, query_desc in enumerate(self.desc1):
-            best_match = None
+            best_match = None    
             for train_idx, train_desc in enumerate(self.desc2):
                 
                 distance = self.distance_func(query_desc, train_desc)

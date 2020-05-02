@@ -6,6 +6,8 @@ from homography import RANSAC
 from keypoint_detector import KeypointDetector
 from keypoint_matcher import Matcher
 
+from utils import compute_euclidean_distance
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -53,7 +55,7 @@ def main(args):
 
 
     # Sensitivity Analysis score!
-    # compute_euclidean_distance(matches, (keypoint1, keypoint2), best_model["H"])
+    compute_euclidean_distance(matches, (keypoint1, keypoint2), best_model["H"])
 
 
     # Perspective warp to create the panorama
