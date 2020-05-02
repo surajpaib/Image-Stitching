@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,8 @@ def fit_model(p1, p2):
 def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     # Score between inlier keypoints in image1 and transformed inlier keypoints in image 2.
     ransac_runs = []
-
+    logger.info("Running RANSAC with {} iterations and {} points".format(N, init_points))
+    start_time = time.time()
     for n in range(N):
         ransac_iteration = {}
         init_indices = random.sample(range(set1.shape[0]), init_points)
@@ -45,6 +47,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
 
         ransac_runs.append(ransac_iteration)
 
+    end_time = time.time() - start_time
 
     ransac_runs.sort(key=lambda x: x["n_inliers"])
     best_run = ransac_runs[-1]
@@ -52,6 +55,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     best_points = set1[best_run["inlier_indices"]], set2[best_run["inlier_indices"]]
     best_model = fit_model(*best_points)
     logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/best_run["n_outliers"]))
+    logger.info("Time taken for RANSAC: {} seconds".format(end_time))
     best_run["H"] = best_model
 
     return best_run

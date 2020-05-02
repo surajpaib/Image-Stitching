@@ -30,7 +30,7 @@ def main(args):
     # cv2.imshow('Image', drawImage)
     # cv2.waitKey(0)
 
-    matcher = Matcher()
+    matcher = Matcher(matching_method=args.matching_method)
     matches = matcher.match(descriptor1, descriptor2)
 
     matches = sorted(matches, key = lambda x:x.distance)
@@ -50,6 +50,11 @@ def main(args):
     matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, inlier_matches, None, flags=2)
     cv2.imshow('Image', matched_image)
     cv2.waitKey(0)
+
+
+    # Sensitivity Analysis score!
+    # compute_euclidean_distance(matches, (keypoint1, keypoint2), best_model["H"])
+
 
     # Perspective warp to create the panorama
     stitchedImage = cv2.warpPerspective(right_image, best_model["H"], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
@@ -71,11 +76,12 @@ if __name__ == "__main__":
     # Keypoint parameters!
     parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=2)
     parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.05)
-    parser.add_argument("--descriptor", help="Type of descriptor to choose", type=str, default='pixel_neighbourhood')
-    parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=3)
+    parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='pixel_neighbourhood')
+    parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
     parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
+    parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters
     parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=1000)

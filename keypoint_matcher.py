@@ -9,14 +9,13 @@ logger = logging.getLogger(__name__)
 def normalize(vector):
     return (vector - vector.mean())/vector.std()
 
-
 def euclidean(query_desc, train_desc):
     distance = np.linalg.norm(query_desc - train_desc)
     return distance
 
 def correlation(query_desc, train_desc):
-    correlation = np.abs(np.correlate(query_desc, train_desc)/query_desc.shape[0])
-    return 1/correlation
+    correlation = -(np.correlate(query_desc, train_desc)/query_desc.shape[0])
+    return correlation
 
 
 class Matcher:
@@ -24,12 +23,24 @@ class Matcher:
         self.matching_method = matching_method
         self.n_matches = n_matches
         self.match_threshold = match_threshold
+        logger.info("Using {} method for matching".format(self.matching_method))
+
+    def get_distance_func(self):
+        self.distance_func = eval(self.matching_method)
+
+        if self.matching_method == "euclidean":
+            self.desc1 = normalize(self.desc1)
+            self.desc2 = normalize(self.desc2)
+
+
 
     def match(self, descriptor1, descriptor2):
-        self.desc1 = normalize(descriptor1)
-        self.desc2 = normalize(descriptor2)
+        self.desc1 = descriptor1
+        self.desc2 = descriptor2           
 
-        self.distance_func = eval(self.matching_method)
+        self.get_distance_func()
+
+
         start_time = time.time()
         self.matches = self.query_image_matching()
         total_time = time.time() - start_time

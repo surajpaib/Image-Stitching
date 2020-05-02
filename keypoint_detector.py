@@ -27,6 +27,7 @@ class KeypointDetector:
     def get_keypoints(self):
         self.harris_keypoints = cv2.cornerHarris(self.grayscale, self.block_size, 3, 0.04)
         self.keypoints = np.argwhere(self.harris_keypoints>self.keypoint_threshold*self.harris_keypoints.max())
+
         return self.keypoints
 
     def get_descriptors(self):
@@ -41,12 +42,14 @@ class KeypointDetector:
         
         self.descriptors = np.delete(self.descriptors, empty_descriptors, axis=0)
         self.keypoints = np.delete(self.keypoints, empty_descriptors, axis=0)
-        logger.info("Using patch size {} around the keypoint, descriptor of size {} computed".format(self.patch_size, self.descriptors.shape[-1]))
+        
+        logger.info("Descriptor of size {} computed".format(self.descriptors.shape))
+        logger.info("Descriptor of size {} computed".format(self.descriptors.shape))
+    
         return self.descriptors
 
     def pixel_neighbourhood(self):
         neighbourhood_vectors = np.zeros((len(self.keypoints), np.square(2*int(np.round(self.patch_size/2 + eps)))* 3))
-        print(neighbourhood_vectors.shape)
 
         # For each keypoint, collect neighbour pixels and flatten.
         for idx, keypoint in enumerate(self.keypoints):
