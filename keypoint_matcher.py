@@ -1,5 +1,10 @@
 import numpy as np
 import cv2
+import logging
+import time
+
+logger = logging.getLogger(__name__)
+
 
 def normalize(vector):
     return (vector - vector.mean())/vector.std()
@@ -10,23 +15,26 @@ def euclidean(query_desc, train_desc):
     return distance
 
 def correlation(query_desc, train_desc):
-    distance = np.correlate(query_desc, train_desc)
-    return np.abs(distance)
+    correlation = np.abs(np.correlate(query_desc, train_desc)/query_desc.shape[0])
+    return 1/correlation
 
 
 class Matcher:
-    def __init__(self, matching_method='euclidean', n_matches=200, match_threshold=0.9):
+    def __init__(self, matching_method='correlation', n_matches=200, match_threshold=0.9):
         self.matching_method = matching_method
         self.n_matches = n_matches
         self.match_threshold = match_threshold
 
-    def match_descriptors(self, descriptor1, descriptor2):
-        self.desc1 = descriptor1
-        self.desc2 = descriptor2
+    def match(self, descriptor1, descriptor2):
+        self.desc1 = normalize(descriptor1)
+        self.desc2 = normalize(descriptor2)
 
         self.distance_func = eval(self.matching_method)
-
+        start_time = time.time()
         self.matches = self.query_image_matching()
+        total_time = time.time() - start_time
+        logger.info("Time taken for matching: {} seconds".format(np.round(total_time)))
+
         return self.matches
 
     def query_image_matching(self):

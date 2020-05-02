@@ -1,10 +1,13 @@
 import numpy as np
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 def fit_model(p1, p2):
     p1 = np.concatenate((p1, np.ones((p1.shape[0], 1))), axis=1)
     p2 = np.concatenate((p2, np.ones((p2.shape[0], 1))), axis=1)
-    model_params = np.linalg.lstsq(p2, p1)[0].T
+    model_params = np.linalg.lstsq(p2, p1, rcond=None)[0].T
     return model_params
 
 
@@ -48,7 +51,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
 
     best_points = set1[best_run["inlier_indices"]], set2[best_run["inlier_indices"]]
     best_model = fit_model(*best_points)
-
+    logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/best_run["n_outliers"]))
     best_run["H"] = best_model
 
     return best_run
