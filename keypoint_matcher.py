@@ -23,6 +23,8 @@ class Matcher:
         self.matching_method = matching_method
         self.n_matches = n_matches
         self.match_threshold = match_threshold
+
+        logging.info('\n')
         logger.info("Using {} method for matching".format(self.matching_method))
 
     def get_distance_func(self):
