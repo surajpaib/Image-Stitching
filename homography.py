@@ -71,6 +71,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
 
     logger.info("Average residuals for x axis: {}; y axis: {}".format(*average_residuals))
     logger.info("Time taken for RANSAC: {} seconds".format(end_time))
+
     best_run["H"] = best_model
 
     return best_run
