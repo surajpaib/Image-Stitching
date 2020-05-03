@@ -28,3 +28,4 @@
 0,images/leftImage.png,images/rightImage.png,2,0.01,pixel_neighbourhood,5,500,euclidean,1000,5,100,False,325.4997941314403
 0,images/leftImage.png,images/rightImage.png,2,0.01,pixel_neighbourhood,5,500,euclidean,1000,5,100,False,361.4668027584565
 0,images/leftImage.png,images/rightImage.png,2,0.01,pixel_neighbourhood,5,500,euclidean,1000,5,100,False,361.4668981039313
+0,images/leftImage.png,images/rightImage.png,2,0.01,pixel_neighbourhood,5,500,euclidean,1000,5,100,False,353.06997731135056

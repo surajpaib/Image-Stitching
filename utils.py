@@ -4,6 +4,11 @@ import pandas as pd
 import os
 
 def array2opencvkp(keypoints):
+    """
+    keypoints: numpy array
+
+    Convert keypoints to opencv keypoint format for easier drawing and visualization
+    """
     keypoints_list = []
     for keypoint in keypoints:
         keypoints_list.append(cv2.KeyPoint(keypoint[1], keypoint[0], 1))
@@ -11,14 +16,23 @@ def array2opencvkp(keypoints):
     return keypoints_list
 
 def compute_euclidean_distance(p1, p2, H):
+    """
+    Compute euclidean distance for sensitivity analysis
+    """
     p2 = np.concatenate((p2, np.ones((p2.shape[0], 1))), axis=1)
     p1 = np.concatenate((p1, np.ones((p1.shape[0], 1))), axis=1)
+
+    # Predicted p1 values using the best transformation
     pred_p1 = np.dot(H, p2.T).T
+    # Euclidean distance between original and predicted gives sensitivity score
     sensitivity = np.linalg.norm(p1 - pred_p1)
     return sensitivity
 
 
 def save_experiment(params):
+    """
+    Save experiment parameters and results to a CSV file
+    """
     filename = params["results_file"]
 
     del params["no_gui"]
@@ -35,6 +49,9 @@ def save_experiment(params):
 
 
 def gui_display(log_dict):
+    """
+    Helpers for visualization of images through the stitching process
+    """
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
 
     drawleft_image = cv2.drawKeypoints(log_dict["left_image"], log_dict["keypoint1"], None)
@@ -60,6 +77,13 @@ def gui_display(log_dict):
 
 
 def wandb_log(log_dict, params):
+    """
+    Helper to upload data to weights and biases project.
+    Citation:
+    Weights and Biases,
+    https://app.wandb.ai/surajpai/image-stitching/reports/Image-Stitching-Report--Vmlldzo5NzAyNg
+    https://wandb.com
+    """
     import wandb
     wandb.init(entity="surajpai", project="image-stitching", config=params)
 
