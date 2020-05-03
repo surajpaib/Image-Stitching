@@ -6,7 +6,7 @@ from homography import RANSAC
 from keypoint_detector import KeypointDetector
 from keypoint_matcher import Matcher
 
-from utils import compute_euclidean_distance, save_experiment
+from utils import compute_euclidean_distance, save_experiment, gui_display, wandb_log
 
 
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +25,10 @@ def main(args):
     keypoint1, descriptor1 = harris_kd.detect_compute_descriptor(left_image)
     keypoint2, descriptor2 = harris_kd.detect_compute_descriptor(right_image)
     
+
+        
+
+
 
     matcher = Matcher(matching_method=args.matching_method)
     matches = matcher.match(descriptor1, descriptor2)
@@ -54,28 +58,35 @@ def main(args):
     stitchedImage = cv2.warpPerspective(right_image, best_model["H"], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
     stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
 
-    # Draw only if GUI is enabled!
-    if not args.no_gui:
-        cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
 
-        drawleft_image = cv2.drawKeypoints(left_image, keypoint1, None)
-        cv2.imshow('Image', drawleft_image)
-        cv2.waitKey(0)
 
-        drawright_image = cv2.drawKeypoints(right_image, keypoint2, None)
-        cv2.imshow('Image', drawright_image)
-        cv2.waitKey(0)
-
-        matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, inlier_matches, None, flags=2)
-        cv2.imshow('Image', matched_image)
-        cv2.waitKey(0)
-
-        cv2.imshow('Image', stitchedImage)
-        cv2.waitKey(0)
-
-    # Save experiment parameters
     params = vars(args)
     params["Sensitivity"] = sensitivity
+
+
+    # Log dict for drawing GUI/ Uploading to dashboard
+
+    if not args.no_gui or args.wandb:
+        log_dict = {}
+
+        log_dict["left_image"] = left_image
+        log_dict["right_image"] = right_image
+        log_dict["keypoint1"] = keypoint1
+        log_dict["keypoint2"] = keypoint2
+        log_dict["matches"] = matches
+        log_dict["inlier_matches"] = inlier_matches
+        log_dict["sensitivity"] = sensitivity
+        log_dict["stitchedImage"] = stitchedImage
+
+    # Draw only if GUI is enabled!
+    if not args.no_gui:
+        gui_display(log_dict)
+    
+    if args.wandb:
+        wandb_log(log_dict, params)
+
+    # Save experiment parameters
+
     save_experiment(params)
 
 
@@ -94,7 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
-    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=200)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters!
@@ -104,8 +115,10 @@ if __name__ == "__main__":
     
     # Application settings
     parser.add_argument("--no_gui", help="Set to false for no display", default=False, type=bool)
+    parser.add_argument("--wandb", help="Weights and Biases integration for experiment tracking", default=False, type=bool)
+
     parser.add_argument("--results_file", help="Path to sensitivity analysis results", type=str, default="results.csv")
 
     args = parser.parse_args()
-
+    print(args)
     main(args)

@@ -1,2 +1,13 @@
 ,left_image_path,right_image_path,harris_neighbourhood_size,harris_keypoint_threshold,descriptor,patch_size,n_matches,matching_method,RANSAC_iterations,RANSAC_init_points,RANSAC_inlier_threshold,Sensitivity
 0,images/im1.jpg,images/im3.jpg,2,0.05,sift,5,300,correlation,1000,5,50,225.39932294268215
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,False,31.5401354208244
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,False,31.540130200453877
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,False,31.540147616633142
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,False,31.540127356620047
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,True,31.540147621014675
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,True,31.540133002688776
+0,images/leftim.png,images/rightim.png,2,0.05,sift,5,500,euclidean,1000,5,50,True,31.54013208950919
+0,images/leftim.png,images/rightim.png,2,0.05,pixel_neighbourhood,5,500,euclidean,1000,5,50,True,194.04673459684435
+0,images/leftim.png,images/rightim.png,2,0.05,pixel_neighbourhood,5,500,euclidean,1000,5,50,False,189.05405491127812
+0,images/leftim.png,images/rightim.png,2,0.05,pixel_neighbourhood,5,500,euclidean,1000,5,50,False,237.48046245010622
+0,images/leftim.png,images/rightim.png,2,0.05,sift,3,200,euclidean,1000,5,50,True,5.643990004840321e-12
