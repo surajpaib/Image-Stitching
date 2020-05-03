@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 def main(args):
+
     # Initialize left and right image!
     left_image = cv2.imread(args.left_image_path)
     right_image = cv2.imread(args.right_image_path)
@@ -22,16 +23,8 @@ def main(args):
                                 keypoint_threshold=args.harris_keypoint_threshold, patch_size=args.patch_size)
     
     keypoint1, descriptor1 = harris_kd.detect_compute_descriptor(left_image)
-    
-    drawImage = cv2.drawKeypoints(left_image, keypoint1, None)
-    # cv2.imshow('Image', drawImage)
-    # cv2.waitKey(0)
-
     keypoint2, descriptor2 = harris_kd.detect_compute_descriptor(right_image)
     
-    drawImage = cv2.drawKeypoints(right_image, keypoint2, None)
-    # cv2.imshow('Image', drawImage)
-    # cv2.waitKey(0)
 
     matcher = Matcher(matching_method=args.matching_method)
     matches = matcher.match(descriptor1, descriptor2)
@@ -50,23 +43,35 @@ def main(args):
 
     # Draw inlier matches!
     inlier_matches = [match for idx, match in enumerate(matches) if idx in best_model["inlier_indices"]]
-    matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, inlier_matches, None, flags=2)
-    cv2.imshow('Image', matched_image)
-    cv2.waitKey(0)
 
 
     # Sensitivity Analysis score!
     sensitivity = compute_euclidean_distance(set1[best_model["inlier_indices"]], set2[best_model["inlier_indices"]], best_model["H"])
     # compute_euclidean_distance(set1, set2, best_model["H"])
-
+    logging.info("Sensitivity score: {}".format(sensitivity))
 
     # Perspective warp to create the panorama
     stitchedImage = cv2.warpPerspective(right_image, best_model["H"], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
     stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
-  
 
-    cv2.imshow('Image', stitchedImage)
-    cv2.waitKey(0)
+    # Draw only if GUI is enabled!
+    if not args.no_gui:
+        cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
+
+        drawleft_image = cv2.drawKeypoints(left_image, keypoint1, None)
+        cv2.imshow('Image', drawleft_image)
+        cv2.waitKey(0)
+
+        drawright_image = cv2.drawKeypoints(right_image, keypoint2, None)
+        cv2.imshow('Image', drawright_image)
+        cv2.waitKey(0)
+
+        matched_image = cv2.drawMatches(left_image, keypoint1, right_image, keypoint2, inlier_matches, None, flags=2)
+        cv2.imshow('Image', matched_image)
+        cv2.waitKey(0)
+
+        cv2.imshow('Image', stitchedImage)
+        cv2.waitKey(0)
 
     # Save experiment parameters
     params = vars(args)
@@ -97,6 +102,10 @@ if __name__ == "__main__":
     parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=5)
     parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=50)
     
+    # Application settings
+    parser.add_argument("--no_gui", help="Set to false for no display", default=False, type=bool)
+    parser.add_argument("--results_file", help="Path to sensitivity analysis results", type=str, default="results.csv")
+
     args = parser.parse_args()
 
     main(args)

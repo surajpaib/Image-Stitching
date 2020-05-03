@@ -19,7 +19,12 @@ def compute_euclidean_distance(p1, p2, H):
 
 
 def save_experiment(params):
-    filename = 'results.csv'
+    filename = params["results_file"]
+
+    del params["no_gui"]
+    del params["results_file"]
+
+
     df = pd.json_normalize(params)
 
     if not(os.path.isfile(filename)):
@@ -27,5 +32,5 @@ def save_experiment(params):
     else:
         df.to_csv(filename, mode='a', header=False)
     
-    
+
 

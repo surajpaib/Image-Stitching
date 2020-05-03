@@ -1,3 +1,2 @@
 ,left_image_path,right_image_path,harris_neighbourhood_size,harris_keypoint_threshold,descriptor,patch_size,n_matches,matching_method,RANSAC_iterations,RANSAC_init_points,RANSAC_inlier_threshold,Sensitivity
-0,images/im1.jpg,images/im3.jpg,2,0.05,sift,5,200,correlation,1000,5,50,202.41300921679849
-0,images/im1.jpg,images/im3.jpg,2,0.05,sift,5,300,correlation,1000,5,50,206.19632844513433
+0,images/im1.jpg,images/im3.jpg,2,0.05,sift,5,300,correlation,1000,5,50,225.39932294268215
