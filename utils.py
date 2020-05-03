@@ -8,21 +8,9 @@ def array2opencvkp(keypoints):
 
     return keypoints_list
 
-def compute_euclidean_distance(matches, keypoints, H):
-    sensitivity_score = 0
-    for i, match in enumerate(matches):
-        kp1 = keypoints[0][match.queryIdx].pt
-        kp2 = keypoints[1][match.trainIdx].pt
-
-        kp2 = np.concatenate((kp2, [1]))
-        kp1 = np.concatenate((kp1, [1]))
-
-        predicted_kp1 = np.dot(H, kp2)
-
-        print("KP1", kp1)
-        print("Pred KP1", predicted_kp1)
-
-        sensitivity_score += np.linalg.norm(kp1 - predicted_kp1)
-
-    sensitivity_score /= len(matches)
-    print("Score:", sensitivity_score)
+def compute_euclidean_distance(p1, p2, H):
+    p2 = np.concatenate((p2, np.ones((p2.shape[0], 1))), axis=1)
+    p1 = np.concatenate((p1, np.ones((p1.shape[0], 1))), axis=1)
+    pred_p1 = np.dot(H, p2.T).T
+    sensitivity = np.linalg.norm(p1 - pred_p1)
+    print("Score: ", sensitivity)     

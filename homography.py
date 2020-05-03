@@ -36,6 +36,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
             pt2 = np.concatenate((pt2, [1]))
 
             difference = pt1 - np.dot(ls_affinetransform, pt2)
+
             distance = np.sqrt(np.square(difference[0]) + np.square(difference[1]))
             if distance <= inlier_threshold:
                 n_inliers += 1
@@ -67,6 +68,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     average_residuals = np.average(residuals, axis=0)
 
     logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/best_run["n_outliers"]))
+
     logger.info("Average residuals for x axis: {}; y axis: {}".format(*average_residuals))
     logger.info("Time taken for RANSAC: {} seconds".format(end_time))
     best_run["H"] = best_model

@@ -55,7 +55,7 @@ def main(args):
 
 
     # Sensitivity Analysis score!
-    compute_euclidean_distance(matches, (keypoint1, keypoint2), best_model["H"])
+    compute_euclidean_distance(set1[best_model["inlier_indices"]], set2[best_model["inlier_indices"]], best_model["H"])
 
 
     # Perspective warp to create the panorama
