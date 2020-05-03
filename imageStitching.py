@@ -6,7 +6,8 @@ from homography import RANSAC
 from keypoint_detector import KeypointDetector
 from keypoint_matcher import Matcher
 
-from utils import compute_euclidean_distance
+from utils import compute_euclidean_distance, save_experiment
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -55,7 +56,8 @@ def main(args):
 
 
     # Sensitivity Analysis score!
-    compute_euclidean_distance(set1[best_model["inlier_indices"]], set2[best_model["inlier_indices"]], best_model["H"])
+    sensitivity = compute_euclidean_distance(set1[best_model["inlier_indices"]], set2[best_model["inlier_indices"]], best_model["H"])
+    # compute_euclidean_distance(set1, set2, best_model["H"])
 
 
     # Perspective warp to create the panorama
@@ -65,7 +67,12 @@ def main(args):
 
     cv2.imshow('Image', stitchedImage)
     cv2.waitKey(0)
-    
+
+    # Save experiment parameters
+    params = vars(args)
+    params["Sensitivity"] = sensitivity
+    save_experiment(params)
+
 
 
 
@@ -85,10 +92,11 @@ if __name__ == "__main__":
     parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
-    # RANSAC Parameters
+    # RANSAC Parameters!
     parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=1000)
     parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=5)
     parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=50)
     
     args = parser.parse_args()
+
     main(args)

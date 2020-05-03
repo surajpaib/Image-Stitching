@@ -4,7 +4,7 @@ import logging
 import time
 
 logger = logging.getLogger(__name__)
-
+eps = 0.00001
 def fit_model(p1, p2):
     p1 = np.concatenate((p1, np.ones((p1.shape[0], 1))), axis=1)
     p2 = np.concatenate((p2, np.ones((p2.shape[0], 1))), axis=1)
@@ -67,7 +67,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     residuals = np.array(best_run["residuals"])
     average_residuals = np.average(residuals, axis=0)
 
-    logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/best_run["n_outliers"]))
+    logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/(len(set1) - init_points) ))
 
     logger.info("Average residuals for x axis: {}; y axis: {}".format(*average_residuals))
     logger.info("Time taken for RANSAC: {} seconds".format(end_time))
