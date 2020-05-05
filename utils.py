@@ -33,7 +33,7 @@ def save_experiment(params):
     """
     Save experiment parameters and results to a CSV file
     """
-    filename = params["results_file"]
+    filename = params["results_file"] + ".csv"
 
     del params["no_gui"]
     del params["results_file"]
@@ -106,5 +106,8 @@ def wandb_log(log_dict, params):
         "all_matches": wandb.Image(matched_image),
         "inlier_matches": wandb.Image(inlier_matched_image),
         "final_stitched_image": wandb.Image(log_dict["stitchedImage"]),
-        "Sensitivity": log_dict["sensitivity"]
+        "Sensitivity": log_dict["sensitivity"],
+        "left_image_keypoint_size": len(log_dict["keypoint1"]),
+        "right_image_keypoint_size": len(log_dict["keypoint2"]),
+
     })

@@ -10,31 +10,35 @@ def normalize(vector):
     """
     Normalize numpy array using mean and variance
     """
-    return (vector - vector.mean())/vector.std()
+    return (vector - vector.min())/(vector.max() - vector.min())
 
 def euclidean(query_desc, train_desc):
     """
     inputs
-    query_desc: numpy array of descriptors for query image
-    train_desc: numpy array of descriptors for train image
+    query_desc: numpy array of one descriptors for query image
+    train_desc: numpy array of all descriptors for train image
 
     returns
     distance: Euclidean distance between two arrays
     """
-    distance = np.linalg.norm(query_desc - train_desc)
+
+    distance = np.linalg.norm(query_desc - train_desc, axis=1)
     return distance
 
 def correlation(query_desc, train_desc):
     """
     inputs
-    query_desc: numpy array of descriptors for query image
-    train_desc: numpy array of descriptors for train image
+    query_desc: numpy array of one descriptors for query image
+    train_desc: numpy array of all descriptors for train image
 
     returns
     correlation: Negative correlation between two array. Negative sign is added since lower is better for the distance
     """
-    correlation = -(np.correlate(query_desc, train_desc)/query_desc.shape[0])
-    return correlation
+    # correlation = -(np.dot(query_desc,train_desc.T)/query_desc.shape[0])
+    correlation = []
+    for desc in train_desc:
+        correlation.append(-(np.correlate(query_desc, desc)/query_desc.shape[0]))
+    return np.array(correlation)
 
 
 class Matcher:
@@ -100,17 +104,13 @@ class Matcher:
         # Iterate over each descriptor in image 1
         for query_idx, query_desc in enumerate(self.desc1):
             best_match = None    
-            # Iterate over each descriptor in image 2
-            for train_idx, train_desc in enumerate(self.desc2):
-                
-                # Compute distance as per set distance function
-                distance = self.distance_func(query_desc, train_desc)
             
-                # Check with best DMatch object if distance is lower, replace the DMatch object with current best
-                if best_match is None or distance <= best_match.distance:
-                    best_match = cv2.DMatch(query_idx, train_idx, distance)
- 
-            # Best match for each descriptor in image 1 aggregated.
+            # Distance function calculates the distance between each descriptor in image to all the descriptors in image 2
+            distance = self.distance_func(query_desc, self.desc2)
+
+            # The descriptor with the lowest distance is taken as the best match for the descriptor in image 1
+            best_match_idx = np.argsort(distance)[0]
+            best_match = cv2.DMatch(query_idx, best_match_idx, distance[best_match_idx])
             matches.append(best_match)
 
         return matches
