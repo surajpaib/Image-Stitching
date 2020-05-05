@@ -108,7 +108,7 @@ class Matcher:
             # Distance function calculates the distance between each descriptor in image to all the descriptors in image 2
             distance = self.distance_func(query_desc, self.desc2)
             # The descriptor with the lowest distance is taken as the best match for the descriptor in image 1
-            best_match_idx = np.argsort(distance)[0]
+            best_match_idx = np.argsort(distance, axis=0)[0]
             best_match = cv2.DMatch(query_idx, best_match_idx, distance[best_match_idx])
             matches.append(best_match)
 

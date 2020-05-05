@@ -116,6 +116,20 @@ class KeypointDetector:
 
         return self.descriptors
 
+
+    def brief(self):
+        """
+        Get SIFT descriptors for keypoints from Harris corner
+        """
+        sift = cv2.xfeatures2d.BriefDescriptorExtractor_create()
+
+        kp = array2opencvkp(self.keypoints)
+
+        _, self.descriptors = brief.compute(self.grayscale, kp)
+
+        return self.descriptors
+
+
     # def full_sift(self):
     #     """
     #     Get SIFT keypoints and descriptors
