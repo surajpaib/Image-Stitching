@@ -131,3 +131,13 @@
 0,images/im1.jpg,images/im2.jpg,2,0.05,pixel_neighbourhood,5,50,correlation,1000,5,10,False,4.546501208931305
 0,images/im1.jpg,images/im2.jpg,2,0.05,pixel_neighbourhood,5,50,correlation,1000,5,10,False,1.0
 0,images/leftImage.png,images/rightImage.png,2,0.05,pixel_neighbourhood,5,50,correlation,1000,5,10,False,16.267002938936987
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,956.8787494643565
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,1012.9733106932263
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,1023.4018904359255
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,968.9968410201225
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,970.9457592220298
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,100,False,940.599099265483
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,50,False,89.9806294495711
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,50,False,90.07441302562735
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,50,False,90.00952383807501
+0,images/leftImage.png,images/rightImage.png,2,0.05,sift,5,500,correlation,1000,5,50,False,132.84490148997767

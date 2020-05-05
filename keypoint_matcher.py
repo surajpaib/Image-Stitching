@@ -19,7 +19,7 @@ def euclidean(query_desc, train_desc):
     train_desc: numpy array of all descriptors for train image
 
     returns
-    distance: Euclidean distance between two arrays
+    distance: Euclidean distance for all descriptors in train image with the descriptor in query image
     """
 
     distance = np.linalg.norm(query_desc - train_desc, axis=1)
@@ -32,13 +32,13 @@ def correlation(query_desc, train_desc):
     train_desc: numpy array of all descriptors for train image
 
     returns
-    correlation: Negative correlation between two array. Negative sign is added since lower is better for the distance
+    correlation: Normalized correlation array for all descriptors in train image with the descriptor in query image
     """
-    # correlation = -(np.dot(query_desc,train_desc.T)/query_desc.shape[0])
-    correlation = []
-    for desc in train_desc:
-        correlation.append(-(np.correlate(query_desc, desc)/query_desc.shape[0]))
-    return np.array(correlation)
+
+    # Dot product between the vector and matrix gives the valid correlation for each descriptor in the matrix with the vector.
+    # Negative since we want distance and lower is better
+    correlation = -np.dot(query_desc,train_desc.T)
+    return normalize(correlation)
 
 
 class Matcher:
@@ -107,7 +107,6 @@ class Matcher:
             
             # Distance function calculates the distance between each descriptor in image to all the descriptors in image 2
             distance = self.distance_func(query_desc, self.desc2)
-
             # The descriptor with the lowest distance is taken as the best match for the descriptor in image 1
             best_match_idx = np.argsort(distance)[0]
             best_match = cv2.DMatch(query_idx, best_match_idx, distance[best_match_idx])

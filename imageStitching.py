@@ -111,17 +111,17 @@ if __name__ == "__main__":
     # Keypoint parameters!
     parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=2)
     parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.05)
-    parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='pixel_neighbourhood')
+    parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='sift')
     parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
-    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=50)
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='correlation')
 
     # RANSAC Parameters!
     parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=1000)
     parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=5)
-    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=10)
+    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=50)
     
     # Application settings
     parser.add_argument("--no_gui", help="Set to false for no display", default=False, type=bool)
