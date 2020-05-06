@@ -103,11 +103,13 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     
     # Get averaged residuals for x and y axis
     residuals = np.array(best_run["residuals"])
-    average_residuals = np.average(residuals, axis=0)
-
-    logger.info("Inlier Ratio: {}".format(float(best_run["n_inliers"])/(len(set1) - init_points) ))
-
-    logger.info("Average residuals for x axis: {}; y axis: {}".format(*average_residuals))
+    best_run["average_residuals"] = np.average(residuals)
+    
+    # Compute inlier ratio
+    best_run["inlier_ratio"] = float(best_run["n_inliers"])/(len(set1) - init_points) 
+    
+    logger.info("Inlier Ratio: {}".format(best_run["inlier_ratio"]))
+    logger.info("Average residuals: {}".format(best_run["average_residuals"]))
     logger.info("Time taken for RANSAC: {} seconds".format(end_time))
 
     best_run["H"] = best_model

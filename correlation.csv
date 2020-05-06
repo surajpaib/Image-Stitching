@@ -1,4 +1,4 @@
 ,left_image_path,right_image_path,harris_neighbourhood_size,harris_keypoint_threshold,descriptor,patch_size,n_matches,matching_method,RANSAC_iterations,RANSAC_init_points,RANSAC_inlier_threshold,wandb,Sensitivity
-0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,100,correlation,1000,5,20,True,53.545025318432806
-0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,200,correlation,1000,5,20,True,81.07082911132851
-0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,500,correlation,1000,5,20,True,108.20981710387376
+0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,100,correlation,1000,5,20,True,35.03250191573805
+0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,200,correlation,1000,5,20,True,41.96991552914789
+0,images/leftImage.png,images/rightImage.png,5,0.05,smooth_pixel_neighbourhood,5,500,correlation,1000,5,20,True,65.92368135416152

@@ -72,7 +72,12 @@ def main(args):
     # Collect the arguments for experiment logging
     params = vars(args)
     params["Sensitivity"] = sensitivity
-
+    
+    # Keys of the best model are added to params to be saved
+    params["n_inliers"] = best_model["n_inliers"]
+    params["inlier_ratio"] = best_model["inlier_ratio"]
+    params["average_residuals"] = best_model["average_residuals"]
+   
 
     # Log dict for drawing GUI/ Uploading to dashboard
 
@@ -114,7 +119,7 @@ if __name__ == "__main__":
     parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
-    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=100)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters!

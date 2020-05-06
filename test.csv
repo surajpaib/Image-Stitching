@@ -1,0 +1,16 @@
+,left_image_path,right_image_path,harris_neighbourhood_size,harris_keypoint_threshold,descriptor,patch_size,n_matches,matching_method,RANSAC_iterations,RANSAC_init_points,RANSAC_inlier_threshold,wandb,Sensitivity,n_inliers,inlier_ratio,average_residuals
+0,images/im1.jpg,images/im2.jpg,5,0.05,smooth_pixel_neighbourhood,5,100,euclidean,1000,5,20,False,97.15264699022258,89,0.9368421052631579,91.57923625477717
+0,images/im1.jpg,images/im2.jpg,5,0.05,sift,5,100,euclidean,1000,5,20,False,98.77792834537364,65,0.6842105263157895,96.22712693739662
+0,images/im1.jpg,images/im2.jpg,5,0.05,histogram_pixel_neighbourhood,12,100,euclidean,1000,5,20,False,64.5863512531735,87,0.9157894736842105,31.03638470769335
+0,images/im1.jpg,images/im2.jpg,5,0.05,histogram_pixel_neighbourhood,16,100,euclidean,1000,5,20,False,33.3726092336533,84,0.8842105263157894,10.87435749471072
+0,images/im1.jpg,images/im2.jpg,5,0.05,histogram_pixel_neighbourhood,10,100,euclidean,1000,5,20,False,62.57080724952063,60,0.631578947368421,45.507627417076215
+0,images/im1.jpg,images/im2.jpg,5,0.05,histogram_pixel_neighbourhood,10,100,correlation,1000,5,20,False,69.06056840542044,52,0.5473684210526316,47.0502136752131
+0,images/old1.png,images/old2.png,5,0.05,histogram_pixel_neighbourhood,10,100,euclidean,1000,5,20,False,9.964077368739858,13,0.1368421052631579,18.233182570329227
+0,images/old1.png,images/old2.png,5,0.05,sift,5,100,euclidean,1000,5,20,False,30.469750789910275,15,0.15789473684210525,33.95168601255022
+0,images/974-1.jpg,images/975-1.jpg,5,0.05,histogram_pixel_neighbourhood,10,100,euclidean,1000,5,20,False,90.42957406242692,56,0.5894736842105263,97.0883715414592
+0,images/974-1.jpg,images/975-1.jpg,5,0.05,histogram_pixel_neighbourhood,16,100,euclidean,1000,5,20,False,43.0883934448835,68,0.7157894736842105,118.9134275644537
+0,images/974-1.jpg,images/975-1.jpg,5,0.05,histogram_pixel_neighbourhood,16,200,euclidean,1000,5,50.0,False,368.7032825692655,185,0.9487179487179487,412.53872801448995
+0,images/974-1.jpg,images/975-1.jpg,5,0.05,histogram_pixel_neighbourhood,16,200,euclidean,1000,5,20.0,False,53.3988835786541,125,0.6410256410256411,91.23595589429286
+0,images/974-1.jpg,images/975-1.jpg,5,0.05,sift,5,200,euclidean,1000,5,20.0,False,42.71569996991567,130,0.6666666666666666,16.18958786559708
+0,images/leftImage.png,images/rightImage.png,5,0.05,sift,5,200,euclidean,1000,5,20.0,False,17.40480408448535,194,0.9948717948717949,1.5676073373442578
+0,images/leftim.png,images/rightim.png,5,0.05,sift,5,200,euclidean,1000,5,20.0,False,1.5085290084057666e-11,195,1.0,7.472743512501678e-23
