@@ -105,6 +105,48 @@ class KeypointDetector:
         return neighbourhood_vectors.astype(np.float32)
 
 
+    def smooth_pixel_neighbourhood(self):
+        """
+        A pixel neighbourhood around each keypoint is computed in the RGB image. The size of the neighbourhood is determined by patch_size parameter.
+        The vector size is 2x(patch_size/2)^2 for each channel. The pixel neighbourhood is then flattened. 
+        """
+        neighbourhood_vectors = np.zeros((len(self.keypoints), np.square(2*int(np.round(self.patch_size/2 + eps)))* 3))
+        self.smoothed_image = cv2.blur(self.image, (3, 3))
+        # For each keypoint, collect neighbour pixels and flatten.
+        for idx, keypoint in enumerate(self.keypoints):
+            neighbourhood_patch = self.smoothed_image[keypoint[0] - int(np.round(self.patch_size/2 + eps)):keypoint[0] + int(np.round(self.patch_size/2 + eps)), \
+                keypoint[1] - int(np.round(self.patch_size/2 + eps)):keypoint[1] + int(np.round(self.patch_size/2 + eps))]
+
+            if neighbourhood_patch.size == np.square(2*int(np.round(self.patch_size/2 + eps)))* 3:
+                neighbourhood_vectors[idx] = neighbourhood_patch.flatten()
+
+        return neighbourhood_vectors.astype(np.float32)
+
+
+    def histogram_pixel_neighbourhood(self):
+        """
+        A pixel neighbourhood around each keypoint is computed in the RGB image. The size of the neighbourhood is determined by patch_size parameter.
+        The vector size is 2x(patch_size/2)^2 for each channel. The pixel neighbourhood is then flattened. 
+        """
+        neighbourhood_vectors = np.zeros((len(self.keypoints), self.patch_size* 2*3))
+        self.smoothed_image = cv2.blur(self.image, (3, 3))
+        # For each keypoint, collect neighbour pixels and flatten.
+        for idx, keypoint in enumerate(self.keypoints):
+            neighbourhood_patch = self.smoothed_image[keypoint[0] - int(np.round(self.patch_size/2 + eps)):keypoint[0] + int(np.round(self.patch_size/2 + eps)), \
+                keypoint[1] - int(np.round(self.patch_size/2 + eps)):keypoint[1] + int(np.round(self.patch_size/2 + eps))]
+
+
+            R_histogram = cv2.calcHist([neighbourhood_patch], [0], None, [self.patch_size*2], [0, 256])
+            G_histogram = cv2.calcHist([neighbourhood_patch], [1], None, [self.patch_size*2], [0, 256])
+            B_histogram = cv2.calcHist([neighbourhood_patch], [2], None, [self.patch_size*2], [0, 256])
+            
+            RGB_histogram = np.concatenate((R_histogram, G_histogram, B_histogram)).flatten()
+            if neighbourhood_patch.size == np.square(2*int(np.round(self.patch_size/2 + eps)))* 3:
+                neighbourhood_vectors[idx] = RGB_histogram
+                
+        return neighbourhood_vectors.astype(np.float32)
+
+
     def sift(self):
         """
         Get SIFT descriptors for keypoints from Harris corner
@@ -119,9 +161,9 @@ class KeypointDetector:
 
     def brief(self):
         """
-        Get SIFT descriptors for keypoints from Harris corner
+        Get BRIEF descriptors for keypoints from Harris corner
         """
-        sift = cv2.xfeatures2d.BriefDescriptorExtractor_create()
+        brief = cv2.xfeatures2d.BriefDescriptorExtractor_create()
 
         kp = array2opencvkp(self.keypoints)
 

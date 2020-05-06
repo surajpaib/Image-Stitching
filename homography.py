@@ -97,7 +97,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
     ransac_runs.sort(key=lambda x: x["n_inliers"])
     best_run = ransac_runs[-1]
 
-    # Refit the transformation on all the inliers to obtained the best fit.
+    # Refit the transformation on all the inliers to obtain the best fit.
     best_points = set1[best_run["inlier_indices"]], set2[best_run["inlier_indices"]]
     best_model = fit_model(*best_points)
     

@@ -25,6 +25,20 @@ def euclidean(query_desc, train_desc):
     distance = np.linalg.norm(query_desc - train_desc, axis=1)
     return distance
 
+def hamming(query_desc, train_desc):
+    """
+    inputs
+    query_desc: numpy array of one descriptors for query image
+    train_desc: numpy array of all descriptors for train image
+
+    returns
+    distance: Hamming distance for all descriptors in train image with the descriptor in query image
+    """
+    distance = np.count_nonzero(np.bitwise_xor(query_desc, train_desc), axis=1)
+
+    return distance
+
+
 def correlation(query_desc, train_desc):
     """
     inputs
@@ -37,8 +51,8 @@ def correlation(query_desc, train_desc):
 
     # Dot product between the vector and matrix gives the valid correlation for each descriptor in the matrix with the vector.
     # Negative since we want distance and lower is better
-    correlation = -np.dot(query_desc,train_desc.T)
-    return normalize(correlation)
+    correlation = -np.dot(query_desc, train_desc.T)
+    return correlation
 
 
 class Matcher:
@@ -67,10 +81,9 @@ class Matcher:
         """
         self.distance_func = eval(self.matching_method)
 
-        # Normalize values if euclidean
-        if self.matching_method == "euclidean":
-            self.desc1 = normalize(self.desc1)
-            self.desc2 = normalize(self.desc2)
+        # Normalize descriptors
+        self.desc1 = normalize(self.desc1)
+        self.desc2 = normalize(self.desc2)
 
 
     def match(self, descriptor1, descriptor2):
@@ -101,6 +114,8 @@ class Matcher:
         """
         matches = []
 
+
+
         # Iterate over each descriptor in image 1
         for query_idx, query_desc in enumerate(self.desc1):
             best_match = None    
@@ -109,6 +124,7 @@ class Matcher:
             distance = self.distance_func(query_desc, self.desc2)
             # The descriptor with the lowest distance is taken as the best match for the descriptor in image 1
             best_match_idx = np.argsort(distance, axis=0)[0]
+
             best_match = cv2.DMatch(query_idx, best_match_idx, distance[best_match_idx])
             matches.append(best_match)
 
