@@ -51,7 +51,7 @@ def correlation(query_desc, train_desc):
 
     # Dot product between the vector and matrix gives the valid correlation for each descriptor in the matrix with the vector.
     # Negative since we want distance and lower is better
-    correlation = -np.dot(query_desc, train_desc.T)
+    correlation = -np.dot(query_desc, train_desc.T)/(np.linalg.norm(query_desc)* np.linalg.norm(train_desc, axis=1))
     return correlation
 
 
