@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module keypoint_detector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>keypoint_detector</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/d/DKE/Image-Stitching/keypoint_detector.py">/mnt/d/DKE/Image-Stitching/keypoint_detector.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="cv2.cv2.html">cv2.cv2</a><br>
+</td><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="keypoint_detector.html#KeypointDetector">KeypointDetector</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="KeypointDetector">class <strong>KeypointDetector</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="KeypointDetector-__init__"><strong>__init__</strong></a>(self, block_size=2, keypoint_threshold=0.01, descriptor_method='pixel_neighbourhood', patch_size=5)</dt><dd><tt><a href="#KeypointDetector">KeypointDetector</a>&nbsp;class&nbsp;to&nbsp;compute&nbsp;keypoints&nbsp;and&nbsp;descriptors&nbsp;for&nbsp;an&nbsp;image<br>
+&nbsp;<br>
+Parameters<br>
+-------------------------------------------------------------<br>
+block_size:&nbsp;Size&nbsp;of&nbsp;window&nbsp;used&nbsp;for&nbsp;Harris&nbsp;keypoint&nbsp;detection<br>
+keypoint_threshold:&nbsp;Threshold&nbsp;of&nbsp;values&nbsp;to&nbsp;consider&nbsp;as&nbsp;a&nbsp;keypoint&nbsp;(edge),&nbsp;indicates&nbsp;keypoints&nbsp;considered&nbsp;as&nbsp;a&nbsp;percentage&nbsp;of&nbsp;max&nbsp;keypoint&nbsp;edge&nbsp;score.<br>
+descriptor_method:&nbsp;Method&nbsp;chosen&nbsp;to&nbsp;extract&nbsp;descriptors&nbsp;from&nbsp;an&nbsp;image.<br>
+patch_size:&nbsp;If&nbsp;a&nbsp;custom&nbsp;descriptor_method&nbsp;is&nbsp;chosen,&nbsp;patch_size&nbsp;determines&nbsp;how&nbsp;much&nbsp;of&nbsp;the&nbsp;neighbourhood&nbsp;to&nbsp;consider<br>
+&nbsp;<br>
+Methods<br>
+-------------------------------------------------------------<br>
+detect_compute_descriptor<br>
+get_keypoints<br>
+get_descriptors<br>
+pixel_neighbourhood<br>
+sift</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-brief"><strong>brief</strong></a>(self)</dt><dd><tt>Get&nbsp;BRIEF&nbsp;descriptors&nbsp;for&nbsp;keypoints&nbsp;from&nbsp;Harris&nbsp;corner</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-detect_compute_descriptor"><strong>detect_compute_descriptor</strong></a>(self, image)</dt><dd><tt>Function&nbsp;to&nbsp;get&nbsp;both&nbsp;keypoints&nbsp;are&nbsp;descriptors&nbsp;from&nbsp;an&nbsp;image<br>
+image:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;the&nbsp;image<br>
+&nbsp;<br>
+returns<br>
+keypoints,&nbsp;descriptors</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-get_descriptors"><strong>get_descriptors</strong></a>(self)</dt><dd><tt>Compute&nbsp;descriptors&nbsp;for&nbsp;the&nbsp;keypoints&nbsp;obtained&nbsp;in&nbsp;the&nbsp;get_keypoints&nbsp;method.<br>
+A&nbsp;descriptor&nbsp;is&nbsp;a&nbsp;n-element&nbsp;vector&nbsp;for&nbsp;each&nbsp;keypoint.</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-get_keypoints"><strong>get_keypoints</strong></a>(self)</dt><dd><tt>Function&nbsp;to&nbsp;get&nbsp;keypoints&nbsp;from&nbsp;the&nbsp;image&nbsp;using&nbsp;cornerHarris&nbsp;method&nbsp;from&nbsp;opencv&nbsp;with&nbsp;the&nbsp;set&nbsp;parameters.&nbsp;<br>
+Use&nbsp;threshold&nbsp;to&nbsp;select&nbsp;keypoints&nbsp;with&nbsp;a&nbsp;good&nbsp;edge&nbsp;score,&nbsp;this&nbsp;threshold&nbsp;is&nbsp;a&nbsp;parameter&nbsp;of&nbsp;the&nbsp;keypoint&nbsp;<br>
+detection<br>
+&nbsp;<br>
+returns<br>
+keypoints</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-histogram_pixel_neighbourhood"><strong>histogram_pixel_neighbourhood</strong></a>(self)</dt><dd><tt>A&nbsp;pixel&nbsp;neighbourhood&nbsp;around&nbsp;each&nbsp;keypoint&nbsp;is&nbsp;computed&nbsp;in&nbsp;the&nbsp;RGB&nbsp;image.&nbsp;The&nbsp;size&nbsp;of&nbsp;the&nbsp;neighbourhood&nbsp;is&nbsp;determined&nbsp;by&nbsp;patch_size&nbsp;parameter.<br>
+The&nbsp;vector&nbsp;size&nbsp;is&nbsp;2x(patch_size/2)^2&nbsp;for&nbsp;each&nbsp;channel.&nbsp;The&nbsp;pixel&nbsp;neighbourhood&nbsp;is&nbsp;then&nbsp;flattened.</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-pixel_neighbourhood"><strong>pixel_neighbourhood</strong></a>(self)</dt><dd><tt>A&nbsp;pixel&nbsp;neighbourhood&nbsp;around&nbsp;each&nbsp;keypoint&nbsp;is&nbsp;computed&nbsp;in&nbsp;the&nbsp;RGB&nbsp;image.&nbsp;The&nbsp;size&nbsp;of&nbsp;the&nbsp;neighbourhood&nbsp;is&nbsp;determined&nbsp;by&nbsp;patch_size&nbsp;parameter.<br>
+The&nbsp;vector&nbsp;size&nbsp;is&nbsp;2x(patch_size/2)^2&nbsp;for&nbsp;each&nbsp;channel.&nbsp;The&nbsp;pixel&nbsp;neighbourhood&nbsp;is&nbsp;then&nbsp;flattened.</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-sift"><strong>sift</strong></a>(self)</dt><dd><tt>Get&nbsp;SIFT&nbsp;descriptors&nbsp;for&nbsp;keypoints&nbsp;from&nbsp;Harris&nbsp;corner</tt></dd></dl>
+
+<dl><dt><a name="KeypointDetector-smooth_pixel_neighbourhood"><strong>smooth_pixel_neighbourhood</strong></a>(self)</dt><dd><tt>A&nbsp;pixel&nbsp;neighbourhood&nbsp;around&nbsp;each&nbsp;keypoint&nbsp;is&nbsp;computed&nbsp;in&nbsp;the&nbsp;RGB&nbsp;image.&nbsp;The&nbsp;size&nbsp;of&nbsp;the&nbsp;neighbourhood&nbsp;is&nbsp;determined&nbsp;by&nbsp;patch_size&nbsp;parameter.<br>
+The&nbsp;vector&nbsp;size&nbsp;is&nbsp;2x(patch_size/2)^2&nbsp;for&nbsp;each&nbsp;channel.&nbsp;The&nbsp;pixel&nbsp;neighbourhood&nbsp;is&nbsp;then&nbsp;flattened.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>eps</strong> = 1e-06<br>
+<strong>logger</strong> = &lt;Logger keypoint_detector (WARNING)&gt;</td></tr></table>
+</body></html>

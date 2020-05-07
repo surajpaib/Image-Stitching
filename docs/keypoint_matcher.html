@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module keypoint_matcher</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>keypoint_matcher</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/mnt/d/DKE/Image-Stitching/keypoint_matcher.py">/mnt/d/DKE/Image-Stitching/keypoint_matcher.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="cv2.cv2.html">cv2.cv2</a><br>
+</td><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="keypoint_matcher.html#Matcher">Matcher</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Matcher">class <strong>Matcher</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Matcher-__init__"><strong>__init__</strong></a>(self, matching_method='correlation')</dt><dd><tt><a href="#Matcher">Matcher</a>&nbsp;class&nbsp;to&nbsp;match&nbsp;descriptors&nbsp;using&nbsp;a&nbsp;matching&nbsp;method<br>
+&nbsp;<br>
+Parameters<br>
+-------------------------------------------------------------<br>
+matching_method:&nbsp;Method&nbsp;used&nbsp;to&nbsp;compute&nbsp;distance&nbsp;between&nbsp;the&nbsp;descriptors<br>
+&nbsp;<br>
+Methods<br>
+-------------------------------------------------------------<br>
+get_distance_func<br>
+match<br>
+query_image_matching</tt></dd></dl>
+
+<dl><dt><a name="Matcher-descriptor_matching"><strong>descriptor_matching</strong></a>(self)</dt><dd><tt>Compute&nbsp;matches&nbsp;between&nbsp;descriptors.&nbsp;<br>
+For&nbsp;descriptors&nbsp;from&nbsp;first&nbsp;image,&nbsp;a&nbsp;brute&nbsp;force&nbsp;best&nbsp;match&nbsp;is&nbsp;calculated&nbsp;with&nbsp;all&nbsp;descriptors&nbsp;from&nbsp;the&nbsp;second&nbsp;image.<br>
+The&nbsp;best&nbsp;match&nbsp;is&nbsp;returned&nbsp;for&nbsp;each&nbsp;descriptor</tt></dd></dl>
+
+<dl><dt><a name="Matcher-get_distance_func"><strong>get_distance_func</strong></a>(self)</dt><dd><tt>Get&nbsp;the&nbsp;distance&nbsp;function&nbsp;selected&nbsp;from&nbsp;the&nbsp;parameter&nbsp;and&nbsp;perform&nbsp;necessary&nbsp;pre-processing</tt></dd></dl>
+
+<dl><dt><a name="Matcher-match"><strong>match</strong></a>(self, descriptor1, descriptor2)</dt><dd><tt>Get&nbsp;matches&nbsp;between&nbsp;two&nbsp;descriptors&nbsp;by&nbsp;calling&nbsp;the&nbsp;descriptor&nbsp;matching&nbsp;function</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-correlation"><strong>correlation</strong></a>(query_desc, train_desc)</dt><dd><tt>inputs<br>
+query_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;one&nbsp;descriptors&nbsp;for&nbsp;query&nbsp;image<br>
+train_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;all&nbsp;descriptors&nbsp;for&nbsp;train&nbsp;image<br>
+&nbsp;<br>
+returns<br>
+correlation:&nbsp;Normalized&nbsp;correlation&nbsp;array&nbsp;for&nbsp;all&nbsp;descriptors&nbsp;in&nbsp;train&nbsp;image&nbsp;with&nbsp;the&nbsp;descriptor&nbsp;in&nbsp;query&nbsp;image</tt></dd></dl>
+ <dl><dt><a name="-euclidean"><strong>euclidean</strong></a>(query_desc, train_desc)</dt><dd><tt>inputs<br>
+query_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;one&nbsp;descriptors&nbsp;for&nbsp;query&nbsp;image<br>
+train_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;all&nbsp;descriptors&nbsp;for&nbsp;train&nbsp;image<br>
+&nbsp;<br>
+returns<br>
+distance:&nbsp;Euclidean&nbsp;distance&nbsp;for&nbsp;all&nbsp;descriptors&nbsp;in&nbsp;train&nbsp;image&nbsp;with&nbsp;the&nbsp;descriptor&nbsp;in&nbsp;query&nbsp;image</tt></dd></dl>
+ <dl><dt><a name="-hamming"><strong>hamming</strong></a>(query_desc, train_desc)</dt><dd><tt>inputs<br>
+query_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;one&nbsp;descriptors&nbsp;for&nbsp;query&nbsp;image<br>
+train_desc:&nbsp;numpy&nbsp;array&nbsp;of&nbsp;all&nbsp;descriptors&nbsp;for&nbsp;train&nbsp;image<br>
+&nbsp;<br>
+returns<br>
+distance:&nbsp;Hamming&nbsp;distance&nbsp;for&nbsp;all&nbsp;descriptors&nbsp;in&nbsp;train&nbsp;image&nbsp;with&nbsp;the&nbsp;descriptor&nbsp;in&nbsp;query&nbsp;image</tt></dd></dl>
+ <dl><dt><a name="-normalize"><strong>normalize</strong></a>(vector)</dt><dd><tt>Normalize&nbsp;numpy&nbsp;array&nbsp;using&nbsp;mean&nbsp;and&nbsp;variance</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>logger</strong> = &lt;Logger keypoint_matcher (WARNING)&gt;</td></tr></table>
+</body></html>
