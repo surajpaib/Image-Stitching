@@ -112,7 +112,7 @@ def wandb_log(log_dict, params):
 
 def post_process(image):
     """
-    Ugly postprocessing for now!
+    Remove black blocks by checking if entire rows and columns are black and deleting them
     """
     del_row_idx = []
     del_col_idx = []

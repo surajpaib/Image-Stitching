@@ -69,7 +69,7 @@ def main(args):
     stitchedImage = cv2.warpAffine(right_image, best_model["H"][:-1, :], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
     stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
 
-
+    # Postprocessing to remove black blocks in the image
     stitchedImage = post_process(stitchedImage)
 
     # Collect the arguments for experiment logging

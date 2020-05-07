@@ -17,7 +17,10 @@ def main(args):
     stitchedImage = None
     input_images = args.input_images
 
+    # Loop over input array of images
     while len(input_images) > 1:
+
+        # Use last two sets of images for the first estimation
         left_image_path = input_images[-2]
         right_image_path = input_images[-1]
 
@@ -79,10 +82,11 @@ def main(args):
         stitchedImage = cv2.warpAffine(stitchedImage, best_model["H"][:-1, :], (left_image.shape[1] + stitchedImage.shape[1], left_image.shape[0]))
         stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
 
+        # Remove transformed image from the list. 
         input_images.pop()
 
 
-
+    # Postprocessing to remove black blocks in the image
     stitchedImage = post_process(stitchedImage)
 
 
@@ -128,19 +132,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_images", help="Path to images in the pair", nargs="+")
 
-    # Keypoint parameters!
+ # Keypoint parameters!
     parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=2)
     parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.01)
     parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='sift')
     parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
-    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=1000)
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters!
     parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=500)
-    parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=5)
+    parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=3)
     parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=20)
     
     # Application settings
