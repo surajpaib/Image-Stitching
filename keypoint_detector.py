@@ -152,7 +152,6 @@ class KeypointDetector:
         Get SIFT descriptors for keypoints from Harris corner
         """
         sift = cv2.xfeatures2d.SIFT_create()
-
         kp = array2opencvkp(self.keypoints)
         _, self.descriptors = sift.compute(self.grayscale, kp)
 

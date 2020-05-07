@@ -140,8 +140,8 @@ if __name__ == "__main__":
 
     # RANSAC Parameters!
     parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=500)
-    parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=3)
-    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=10)
+    parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=5)
+    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=20)
     
     # Application settings
     parser.add_argument("--no_gui", help="Set to false for no display", default=False, type=bool)
