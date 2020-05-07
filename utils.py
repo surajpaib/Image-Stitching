@@ -111,3 +111,24 @@ def wandb_log(log_dict, params):
         "right_image_keypoint_size": len(log_dict["keypoint2"]),
 
     })
+
+
+def post_process(image):
+    """
+    Ugly postprocessing for now!
+    """
+    del_row_idx = []
+    del_col_idx = []
+
+    for row in range(image.shape[0]):
+        if np.all(image[row]==0):
+            del_row_idx.append(row)
+
+    for col in range(image.shape[1]):
+        if np.all(image[:, col]==0):
+            del_col_idx.append(col)
+
+    image = np.delete(image, del_row_idx, 0)
+    image = np.delete(image, del_col_idx, 1)
+
+    return image
