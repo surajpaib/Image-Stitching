@@ -6,7 +6,7 @@ from homography import RANSAC
 from keypoint_detector import KeypointDetector
 from keypoint_matcher import Matcher
 
-from utils import compute_euclidean_distance, save_experiment, gui_display, wandb_log
+from utils import compute_euclidean_distance, save_experiment, gui_display, wandb_log, post_process
 
 
 logging.basicConfig(level=logging.INFO)
@@ -68,6 +68,9 @@ def main(args):
     # Affine warp to create the final panorama
     stitchedImage = cv2.warpAffine(right_image, best_model["H"][:-1, :], (left_image.shape[1] + right_image.shape[1], left_image.shape[0]))
     stitchedImage[0:left_image.shape[0], 0:left_image.shape[1]] = left_image
+
+
+    stitchedImage = post_process(stitchedImage)
 
     # Collect the arguments for experiment logging
     params = vars(args)
