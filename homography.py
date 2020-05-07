@@ -5,7 +5,7 @@ import time
 
 logger = logging.getLogger(__name__)
 eps = 0.00001
-
+random.seed(0)
 
 def fit_model(p1, p2):
     """
@@ -86,7 +86,7 @@ def RANSAC(set1, set2, N=1000, init_points=5, inlier_threshold=50):
         ransac_iteration["n_inliers"] = n_inliers
         ransac_iteration["n_outliers"] = len(set1) - (n_inliers + init_points)
         ransac_iteration["residuals"] = residuals
-        ransac_iteration["inlier_indices"] = inlier_indices
+        ransac_iteration["inlier_indices"] = inlier_indices + init_indices
 
 
         ransac_runs.append(ransac_iteration)

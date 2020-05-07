@@ -1,1 +1,1 @@
-python imageStitching.py images/im1.jpg images/im3.jpg --descriptor sift --RANSAC_inlier_threshold 50 --n_matches 500 --harris_neighbourhood_size 
+python imageStitching.py images/im1.jpg images/im3.jpg --descriptor sift --RANSAC_inlier_threshold 50 --n_matches 1000 --matching_method euclidean --harris_keypoint_threshold 0.01 --harris_neighbourhood_size 2

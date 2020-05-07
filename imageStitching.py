@@ -113,13 +113,13 @@ if __name__ == "__main__":
     parser.add_argument("right_image_path", help="Path to second image in the pair")
 
     # Keypoint parameters!
-    parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=5)
-    parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.05)
-    parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='smooth_pixel_neighbourhood')
+    parser.add_argument("--harris_neighbourhood_size", help="Number of pixels in the harris neighbourhood", type=int, default=2)
+    parser.add_argument("--harris_keypoint_threshold", help="Harris keypoint selection threshold", type=float, default=0.01)
+    parser.add_argument("--descriptor", help="Type of descriptor to choose: sift | pixel_neighbourhood", type=str, default='sift')
     parser.add_argument("--patch_size", help="Patch size, ignore for sift since it does it by default", type=int, default=5)
 
     # Matcher parameters!
-    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=100)
+    parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=500)
     parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters!
