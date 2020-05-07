@@ -9,10 +9,7 @@ def array2opencvkp(keypoints):
 
     Convert keypoints to opencv keypoint format for easier drawing and visualization
     """
-    keypoints_list = []
-    for keypoint in keypoints:
-        keypoints_list.append(cv2.KeyPoint(keypoint[1], keypoint[0], 1))
-
+    keypoints_list = [cv2.KeyPoint(keypoint[1], keypoint[0], 1) for keypoint in keypoints]
     return keypoints_list
 
 def compute_euclidean_distance(p1, p2, H):
