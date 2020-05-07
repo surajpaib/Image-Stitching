@@ -1,0 +1,7 @@
+,left_image_path,right_image_path,harris_neighbourhood_size,harris_keypoint_threshold,descriptor,patch_size,n_matches,matching_method,RANSAC_iterations,RANSAC_init_points,RANSAC_inlier_threshold,wandb,Sensitivity,n_inliers,inlier_ratio,average_residuals
+0,images/old1.png,images/old2.png,2,0.01,sift,5,1000,correlation,2000,3,50,False,170.49758429254365,38,0.03811434302908726,473.4649853105634
+0,images/old1.png,images/old2.png,2,0.01,sift,5,1000,correlation,2000,3,50,False,191.94720407937496,50,0.05015045135406219,611.1238331002718
+0,images/_old1.png,images/old2.png,2,0.01,sift,5,1000,euclidean,2000,3,50,False,196.09275763177675,51,0.05115346038114343,451.02086935909665
+0,images/_old1.png,images/old2.png,3,0.01,sift,5,1000,euclidean,2000,3,10,False,18.71926362334997,20,0.020060180541624874,10.876104429056278
+0,images/_old1.png,images/old2.png,2,0.01,sift,5,1000,euclidean,2000,3,5,False,3.886357673888983,10,0.010030090270812437,1.469292995051199
+0,images/im1.jpg,images/im3.jpg,2,0.01,sift,5,1000,euclidean,2000,3,50.0,False,325.47994438982886,216,0.21664994984954863,306.8015318698178

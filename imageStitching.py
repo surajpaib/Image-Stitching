@@ -123,12 +123,12 @@ if __name__ == "__main__":
 
     # Matcher parameters!
     parser.add_argument("--n_matches", help="Number of top matches to choose for RANSAC", type=int, default=1000)
-    parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='correlation')
+    parser.add_argument("--matching_method", help="Method to use for matching between the keypoints", type=str, default='euclidean')
 
     # RANSAC Parameters!
-    parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=500)
+    parser.add_argument("--RANSAC_iterations", help="Number of iterations to run for RANSAC", type=int, default=2000)
     parser.add_argument("--RANSAC_init_points", help="Number of starting points to choose for RANSAC", type=int, default=3)
-    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=10)
+    parser.add_argument("--RANSAC_inlier_threshold", help="Threshold to choose inliers for RANSAC", type=float, default=5)
     
     # Application settings
     parser.add_argument("--no_gui", help="Set to false for no display", default=False, type=bool)
